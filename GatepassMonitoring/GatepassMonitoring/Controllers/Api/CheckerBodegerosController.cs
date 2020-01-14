@@ -26,7 +26,7 @@ namespace GatepassMonitoring.Controllers.Api
         public CheckerBodegero GetCheckerBodegero( int id ) {
 
             var checkerBodegero = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
-
+            
             if( checkerBodegero == null )
                 throw new HttpResponseException( HttpStatusCode.NotFound );
 
