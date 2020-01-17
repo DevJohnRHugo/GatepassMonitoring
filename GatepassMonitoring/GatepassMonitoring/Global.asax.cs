@@ -8,14 +8,16 @@ using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace GatepassMonitoring {
-    public class MvcApplication : System.Web.HttpApplication {
+    public class MvcApplication : HttpApplication {
         protected void Application_Start( ) {
 
+            //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             GlobalConfiguration.Configure( WebApiConfig.Register );
             AreaRegistration.RegisterAllAreas( );
             FilterConfig.RegisterGlobalFilters( GlobalFilters.Filters );
             RouteConfig.RegisterRoutes( RouteTable.Routes );
             BundleConfig.RegisterBundles( BundleTable.Bundles );
+           
         }
     }
 }

@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44308</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -140,13 +140,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\CheckerBodegerosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="GatepassDbContext.cs" />
-    <Compile Include="GatepassRepository.cs" />
+    <Compile Include="DAL\ContextDb\GatepassDbContext.cs" />
+    <Compile Include="HttpException\StatusCodeExceptionResponse.cs" />
+    <Compile Include="Interfaces\IEmployeeRepository.cs" />
+    <Compile Include="DAL\Repository\EmployeeRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IEmployee.cs" />
     <Compile Include="Interfaces\IGatepass.cs" />
+    <Compile Include="Interfaces\IModelValidation.cs" />
     <Compile Include="Interfaces\IProject.cs" />
     <Compile Include="Migrations\202001140648589_InitialMigrationDb.cs" />
     <Compile Include="Migrations\202001140648589_InitialMigrationDb.Designer.cs">
@@ -169,6 +172,7 @@
       <DependentUpon>202001140848558_ConfiguredDBCheckerBodegero.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelStateValidation\ModelValidation.cs" />
     <Compile Include="Models\CheckerBodegero.cs" />
     <Compile Include="Models\Gatepass.cs" />
     <Compile Include="Models\Project.cs" />
@@ -214,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
