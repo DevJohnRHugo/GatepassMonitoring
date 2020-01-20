@@ -12,8 +12,6 @@ namespace GatepassMonitoring.Interfaces {
 
         IEnumerable<IEmployee> GetCheckerBodegero( );
 
-        IEmployee RequestException( int id , HttpStatusCode httpStatusCode );
-
         IEmployee GetSingleEmployee( int id );
 
         IEmployee CreateEmployee( CheckerBodegero checkerBodegero );

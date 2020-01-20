@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Net;
 using GatepassMonitoring.HttpException;
 using GatepassMonitoring.ModelStateValidation;
+using GatepassMonitoring.RetrieveRecordLinq;
 
 namespace GatepassMonitoring {
     public class EmployeeRepository : IEmployeeRepository {
@@ -16,24 +17,44 @@ namespace GatepassMonitoring {
 
         IModelValidation _modelValidation;
 
+        IValidationException _validationException;
+
+        IRetrieveEmployeeSingleOrDefault _retrieveEmployeeSingleOrDefault;
+
         public EmployeeRepository( IModelValidation modelValidation ) {
+
             _modelValidation = modelValidation;
 
         }
 
+        public EmployeeRepository( IValidationException validationException ) {
+
+            _validationException = validationException;
+
+        }
+
+        public EmployeeRepository( IRetrieveEmployeeSingleOrDefault retrieveEmployeeSingleOrDefault ) {
+
+            _retrieveEmployeeSingleOrDefault = retrieveEmployeeSingleOrDefault;
+
+        }
+
+
         public EmployeeRepository( ) {
+
             _modelValidation = new ModelValidation( );
+
+            _validationException = new ValidationException( );
+
+            _retrieveEmployeeSingleOrDefault = new RetrieveEmployeeSingleOrDefault( );
+          
         }
 
-        public IEmployee RequestException( int id, HttpStatusCode httpStatusCode ) {
-            var checkerBodegero = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
-
-            if( checkerBodegero == null )
-                StatusCodeExceptionResponse.StatusCodeException( httpStatusCode );
-            
-            return checkerBodegero;
-
-        }
+       
+        /// <summary>
+        /// GET request the employee recrods
+        /// </summary>
+        /// <returns>Checker/Bodegero</returns>
 
         public IEnumerable<IEmployee> GetCheckerBodegero( ) {
            
@@ -41,13 +62,28 @@ namespace GatepassMonitoring {
 
         }
 
+        /// <summary>
+        /// GET request a single employee with the primary key id
+        /// </summary>
+        /// <param name="id">Identity</param>
+        /// <returns>Single Checker/Bodegero</returns>
         public IEmployee GetSingleEmployee( int id ) {
-            var checkerBodegero = RequestException( id, HttpStatusCode.NotFound );
+
+            var checkerBodegero = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
+
+            if( checkerBodegero == null )
+                StatusCodeExceptionResponse.StatusCodeException( HttpStatusCode.NotFound );
 
             return checkerBodegero;
 
         }
 
+        /// <summary>
+        /// POST request
+        /// Creates new Employee
+        /// </summary>
+        /// <param name="checkerBodegero">Object model</param>
+        /// <returns>New Checker/Bodegero</returns>
         public IEmployee CreateEmployee( CheckerBodegero checkerBodegero ) {
 
             _context.CheckerBodegeros.Add( checkerBodegero );
@@ -56,13 +92,21 @@ namespace GatepassMonitoring {
 
         }
 
+        /// <summary>
+        /// PUT request
+        /// Edit and updates the records of employee
+        /// </summary>
+        /// <param name="id">Identity</param>
+        /// <param name="checkerBodegero">Object model</param>
         public void UpdateCheckerBodegero( int id , CheckerBodegero checkerBodegero ) {
 
             _modelValidation.Validation( HttpStatusCode.BadRequest );
 
-            var checkerBodegeroInDb = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
+            var checkerBodegeroInDb = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
 
-            RequestException( id, HttpStatusCode.NotFound );
+            //_validationException.RequestException( id/*, HttpStatusCode.NotFound*/ );
+            if( checkerBodegeroInDb == null )
+                StatusCodeExceptionResponse.StatusCodeException( HttpStatusCode.NotFound );
 
             checkerBodegeroInDb.EmpID = checkerBodegero.EmpID;
             checkerBodegeroInDb.Name = checkerBodegero.Name;
@@ -70,20 +114,49 @@ namespace GatepassMonitoring {
 
             _context.SaveChanges( );
 
+        }
 
-        }      
+        //if( !ModelState.IsValid )
+        //    throw new HttpResponseException( HttpStatusCode.BadRequest );
+
+        //var checkerBodegeroInDb = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
+
+        //if( checkerBodegeroInDb == null )
+        //    throw new HttpResponseException( HttpStatusCode.NotFound );
+
+        //checkerBodegeroInDb.EmpID = checkerBodegero.EmpID;
+        //checkerBodegeroInDb.Name = checkerBodegero.Name;
+        //checkerBodegeroInDb.Designation = checkerBodegero.Designation;
+
+        //_context.SaveChanges( );
 
 
+        /// <summary>
+        /// DELETE request
+        /// Deletes the employee
+        /// </summary>
+        /// <param name="id">Identity</param>
         public void DeleteCheckerBodegero( int id ) {
 
-            var checkerBodegeroInDb = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
+            var checkerBodegeroInDb = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
 
-            RequestException(id, HttpStatusCode.NotFound );
+            //_validationException.RequestException(id/*, HttpStatusCode.NotFound*/ );
+            if( checkerBodegeroInDb == null )
+                StatusCodeExceptionResponse.StatusCodeException( HttpStatusCode.NotFound );
 
             _context.CheckerBodegeros.Remove( checkerBodegeroInDb );
             _context.SaveChanges( );
 
-        }       
+        }
+
+        //var checkerBodegeroInDb = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
+
+        //if( checkerBodegeroInDb == null )
+        //    throw new HttpResponseException( HttpStatusCode.NotFound );
+
+        //_context.CheckerBodegeros.Remove( checkerBodegeroInDb );
+        //_context.SaveChanges( );
+
 
     }
 }
