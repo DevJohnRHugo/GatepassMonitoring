@@ -160,3 +160,4 @@ H:\Software Projects\GatepassMonitoring\GatepassMonitoring\GatepassMonitoring\ob
 H:\Software Projects\GatepassMonitoring\GatepassMonitoring\GatepassMonitoring\obj\Debug\GatepassMonitoring.dll
 H:\Software Projects\GatepassMonitoring\GatepassMonitoring\GatepassMonitoring\obj\Debug\GatepassMonitoring.pdb
 H:\Software Projects\GatepassMonitoring\GatepassMonitoring\GatepassMonitoring\obj\Debug\GatepassMonitoring.csprojResolveAssemblyReference.cache
+H:\Software Projects\GatepassMonitoring\GatepassMonitoring\GatepassMonitoring\obj\Debug\GatepassMonitoring.Migrations.AddedDataAnnotationsToProjectAndCheckerBodegeroNModels.resources

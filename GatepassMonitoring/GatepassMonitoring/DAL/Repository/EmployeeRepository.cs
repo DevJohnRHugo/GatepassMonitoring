@@ -72,7 +72,8 @@ namespace GatepassMonitoring {
             var checkerBodegero = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
 
             if( checkerBodegero == null )
-                StatusCodeExceptionResponse.StatusCodeException( HttpStatusCode.NotFound );
+                //StatusCodeExceptionResponse.StatusCodeException( HttpStatusCode.NotFound );
+                _modelValidation.ErrorNotFound( );
 
             return checkerBodegero;
 
@@ -85,6 +86,8 @@ namespace GatepassMonitoring {
         /// <param name="checkerBodegero">Object model</param>
         /// <returns>New Checker/Bodegero</returns>
         public IEmployee CreateEmployee( CheckerBodegero checkerBodegero ) {
+
+            _modelValidation.ErrorBadRequest( checkerBodegero );
 
             _context.CheckerBodegeros.Add( checkerBodegero );
             _context.SaveChanges( );
@@ -100,7 +103,7 @@ namespace GatepassMonitoring {
         /// <param name="checkerBodegero">Object model</param>
         public void UpdateCheckerBodegero( int id , CheckerBodegero checkerBodegero ) {
 
-            _modelValidation.Validation( HttpStatusCode.BadRequest );
+            //_modelValidation.ErrorBadRequest(  );
 
             var checkerBodegeroInDb = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
 
@@ -137,6 +140,8 @@ namespace GatepassMonitoring {
         /// </summary>
         /// <param name="id">Identity</param>
         public void DeleteCheckerBodegero( int id ) {
+
+            //_modelValidation.ErrorNotFound( );
 
             var checkerBodegeroInDb = _retrieveEmployeeSingleOrDefault.GetEmployee( id, _context );
 

@@ -37,7 +37,7 @@ namespace GatepassMonitoring.Controllers.Api
 
 
         //GET /api/checkerBodegeros/1
-        public IEmployee GetCheckerBodegero( int id ) {
+        public IHttpActionResult GetCheckerBodegero( int id ) {
 
             #region Codes before
             //var checkerBodegero = _context.CheckerBodegeros.SingleOrDefault( c => c.ID == id );
@@ -48,7 +48,9 @@ namespace GatepassMonitoring.Controllers.Api
             //return checkerBodegero;
             #endregion
 
-            return _context.GetSingleEmployee( id );
+            //return _context.GetSingleEmployee( id );
+
+            return Ok( _context.GetSingleEmployee( id ) );
 
         }
 
